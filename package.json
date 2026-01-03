@@ -1,0 +1,40 @@
+{
+  "name": "forum",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Lightweight developer workspace for managing software products",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "cd backend && uvicorn app.main:app --reload --port 8000",
+    "build": "npm run build:frontend",
+    "build:frontend": "npm --prefix frontend run build",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "npm --prefix frontend run lint",
+    "lint:backend": "cd backend && ruff check .",
+    "format": "npm run format:frontend && npm run format:backend",
+    "format:frontend": "prettier --write \"frontend/src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:backend": "cd backend && ruff format .",
+    "format:check": "prettier --check \"frontend/src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "husky": "^9.1.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.4.0"
+  },
+  "lint-staged": {
+    "frontend/src/**/*.{ts,tsx,js,jsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "frontend/src/**/*.{json,css,md}": [
+      "prettier --write"
+    ],
+    "backend/**/*.py": [
+      "ruff format",
+      "ruff check --fix"
+    ]
+  }
+}
